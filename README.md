@@ -1,10 +1,92 @@
-# JenkinsVulnFinder
+# JenkinsVulnsFinder.py
 
-This repository contains a set of scripts designed to find Jenkins instances and identify potential vulnerabilities associated with them. The First script, `JenkinsScanner.sh`, scans a list of IP addresses for open ports associated with Jenkins, identifies potential Jenkins instances, and saves the results for further analysis. Future scripts will focus on identifying vulnerabilities in the discovered Jenkins instances.
+## Overview
+**JenkinsVulnsFinder** is a Python-based tool designed to scan Jenkins servers for common security vulnerabilities. It performs various security checks, including authentication methods, plugin details, job visibility, node details, anonymous access, and much more. The tool also supports brute-forcing credentials and directory/path enumeration.
 
-## JenkinsScanner.sh
+## Features
+- Detect Jenkins authentication type (RBAC, Matrix-based Security, or OAuth).
+- Identify Jenkins version.
+- Check for anonymous access and CSRF protection.
+- Retrieve job visibility, node details, and stored credentials.
+- Check plugin versions and updates.
+- Brute-force Jenkins credentials using custom username and password lists.
+- Perform directory/path enumeration with a wordlist.
+- Generate results in CSV format for easy reporting.
 
-The `JenkinsScanner.sh` script automates the following tasks:
+## Usage
+
+Run the script with the following options:
+
+### General Options:
+- `--url`: Jenkins Base URL (e.g., `http://localhost:8080`).
+- `--urls`: File containing a list of Jenkins URLs to check.
+- `--cred`: Credentials in the format `username:password`.
+- `--nocred`: Use anonymous access (no credentials required).
+- `--output`: Specify an output CSV file to save the results (optional).
+
+### Brute-force Options:
+- `--brute`: Enable brute-force credential checking.
+- `--users`: File containing a list of usernames for brute-force.
+- `--pass`: File containing a list of passwords for brute-force.
+
+### Directory Search Options:
+- `--dirb`: Directory or path brute-force wordlist file.
+
+### Example Commands:
+
+1. **Run the scanner with anonymous access:**
+   ```bash
+   python jen.py --url http://172.19.107.32:8080 --nocred
+   ```
+
+2. **Run the scanner with credentials:**
+   ```bash
+   python jen.py --url http://172.19.107.32:8080 --cred admin:password
+   ```
+
+3. **Run the scanner with brute-force enabled:**
+   ```bash
+   python jen.py --url http://172.19.107.32:8080 --nocred --brute --users users.txt --pass pass.txt
+   ```
+
+4. **Run the scanner with directory/path search:**
+   ```bash
+   python jen.py --url http://172.19.107.32:8080 --nocred --dirb wordlist.txt
+   ```
+
+## Output
+The tool generates a CSV file with the following fields:
+- URL
+- Version
+- Auth Type
+- Anonymous Access
+- CSRF Protection
+- Job Visibility
+- Script Console
+- Node Details
+- Uses HTTP
+- Stored Credentials
+- Log Access
+- Audit Logs Enabled
+- API Access
+- CLI Access
+- Anonymous Node Access
+- Signup Allowed
+- Plugins
+- UnAuth Endpoints
+- Brute-force Credentials
+- Accessible Paths
+
+Example of generated CSV:
+```csv
+URL,Version,Auth Type,Anonymous Access,CSRF Protection,Job Visibility,...
+http://localhost:8080,2.361.1,RBAC,True,True,MyJob (url: http://localhost:8080/job/MyJob),...
+```
+
+
+# JenkinsScanner.sh
+
+`JenkinsScanner.sh`, scans a list of IP addresses for open ports associated with Jenkins, identifies potential Jenkins instances, and saves the results for further analysis. It automates the following tasks:
 
 1. **Check and Install Dependencies**: Ensures the necessary tools (`masscan`, `httpx`, and `jq`) are installed on your system.
 2. **Masscan for Port Scanning**: Scans a list of IPs for open ports (defined by the user) using `masscan` to find potential Jenkins service endpoints.
@@ -32,9 +114,10 @@ The `JenkinsScanner.sh` script automates the following tasks:
 
 This command will scan the IPs listed in `ip_list.txt`, looking for open ports 80,443,8443,8080,8010,8090,8085 and will save the found Jenkins instances to `jenkins_instances.txt`.
 
-## Future Scripts
-
-In addition to `JenkinsScanner.sh`, this repository will include further scripts aimed at detecting vulnerabilities in the discovered Jenkins instances. Keep an eye on the repository for updates.
+## Notes
+- Ensure you have the appropriate permissions or authorization to scan Jenkins servers.
+- The tool is intended for ethical security assessments and learning purposes.
+- Misuse of this tool can lead to legal consequences. Use responsibly.
 
 ## Contributing
 
