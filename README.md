@@ -3,6 +3,8 @@
 ## Overview
 **JenkinsVulnsFinder** is a Python-based tool designed to scan Jenkins servers for common security vulnerabilities. It performs various security checks, including authentication methods, plugin details, job visibility, node details, anonymous access, and much more. The tool also supports brute-forcing credentials and directory/path enumeration.
 
+You can refer to [Jenkins Penetration Test Cheatsheet](https://www.hackingdream.net/2024/12/jenkins-penetration-test-cheatsheet.html) for more techniques and attack patterns. 
+
 ## Features
 - Detect Jenkins authentication type (RBAC, Matrix-based Security, or OAuth).
 - Identify Jenkins version.
@@ -119,6 +121,9 @@ This command will scan the IPs listed in `ip_list.txt`, looking for open ports 8
 - Ensure you have the appropriate permissions or authorization to scan Jenkins servers.
 - The tool is intended for ethical security assessments and learning purposes.
 - Misuse of this tool can lead to legal consequences. Use responsibly.
+
+  ## References
+- [Jenkins Penetration Test Cheatsheet](https://www.hackingdream.net/2024/12/jenkins-penetration-test-cheatsheet.html)
 
 ## Contributing
 
