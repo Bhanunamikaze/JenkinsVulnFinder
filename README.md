@@ -36,22 +36,23 @@ Run the script with the following options:
 
 1. **Run the scanner with anonymous access:**
    ```bash
-   python jen.py --url http://172.19.107.32:8080 --nocred
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred
    ```
 
 2. **Run the scanner with credentials:**
    ```bash
-   python jen.py --url http://172.19.107.32:8080 --cred admin:password
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred admin:password
    ```
 
 3. **Run the scanner with brute-force enabled:**
    ```bash
-   python jen.py --url http://172.19.107.32:8080 --nocred --brute --users users.txt --pass pass.txt
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred --brute --users users.txt --pass pass.txt
    ```
 
 4. **Run the scanner with directory/path search:**
    ```bash
-   python jen.py --url http://172.19.107.32:8080 --nocred --dirb wordlist.txt
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred --dirb wordlist.txt
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred --dirb wordlist.txt
    ```
 
 ## Output
