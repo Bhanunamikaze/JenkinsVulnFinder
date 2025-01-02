@@ -9,7 +9,9 @@ You can refer to [Jenkins Penetration Test Cheatsheet](https://www.hackingdream.
 - Detect Jenkins authentication type (RBAC, Matrix-based Security, or OAuth).
 - Identify Jenkins version.
 - Check for anonymous access and CSRF protection.
+- Check for CLI, Script Console Access
 - Retrieve job visibility, node details, and stored credentials.
+- Check if Signups are allowed
 - Check plugin versions and updates.
 - Brute-force Jenkins credentials using custom username and password lists.
 - Perform directory/path enumeration with a wordlist.
@@ -24,6 +26,7 @@ Run the script with the following options:
 - `--urls`: File containing a list of Jenkins URLs to check.
 - `--cred`: Credentials in the format `username:password`.
 - `--nocred`: Use anonymous access (no credentials required).
+- `--cookie`: Cookie String for Authentication (use this instead of creds incase of OAuth)
 - `--output`: Specify an output CSV file to save the results (optional).
 
 ### Brute-force Options:
@@ -39,22 +42,36 @@ Run the script with the following options:
 1. **Run the scanner with anonymous access:**
    ```bash
    python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred
+   python JenkinsVulnsFinder.py --urls urls.txt --nocred
+
    ```
 
-2. **Run the scanner with credentials:**
+2. **Run the scanner with credentials: Username:Password**
    ```bash
    python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred admin:password
-   ```
+   python JenkinsVulnsFinder.py --urls urls.txt --cred admin:password
 
-3. **Run the scanner with brute-force enabled:**
+   ```
+   
+3. **Run the scanner with credentials: Cookie**
+   ```bash
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cookie "JSESSIONID.bc33f838=node0icu313myoabe17tcvkdlhkmez1.node0;"
+   python JenkinsVulnsFinder.py --urls urls.txt --cookie "JSESSIONID.bc33f838=node0icu313myoabe17tcvkdlhkmez1.node0;"
+
+   ```
+   
+4. **Run the scanner with brute-force enabled:**
    ```bash
    python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred --brute --users users.txt --pass pass.txt
+   python JenkinsVulnsFinder.py --urls urls.txt --nocred --brute --users users.txt --pass pass.txt
+
    ```
 
-4. **Run the scanner with directory/path search:**
+5. **Run the scanner with directory/path search:**
    ```bash
    python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --nocred --dirb wordlist.txt
    python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred --dirb wordlist.txt
+   python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cookie --dirb wordlist.txt
    ```
 
 ## Output
