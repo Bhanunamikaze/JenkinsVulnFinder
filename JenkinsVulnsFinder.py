@@ -4,16 +4,15 @@ import argparse
 import csv
 from datetime import datetime
 
-def detect_auth_type(base_url, auth, headers):
+def detect_auth_type(base_url):
     auth_url = f"{base_url}/securityRealm/commenceLogin?from=%2F"
     try:
-        response = requests.get(auth_url, auth=auth, headers=headers, allow_redirects=False)
-        print(response.status_code)
+        response = requests.get(auth_url, allow_redirects=False)
         if response.status_code == 404:
             return "Matrix-Based Authorization"
         if response.status_code == 302:
-            response = requests.get(auth_url, auth=auth, headers=headers, allow_redirects=True)
-            # Update you company name here
+            response = requests.get(auth_url, allow_redirects=True)
+            #Update your Company name here
             if "Company Name" in response.text:
                     return "Company OAuth"
             return "Microsoft OAuth"
@@ -24,8 +23,8 @@ def detect_auth_type(base_url, auth, headers):
         #print(f"Error during authentication type detection: {e}")
         return "Error Occured"
 
-def get_jenkins_version(base_url, auth, headers):
-    response = requests.get(base_url, auth=auth, headers=headers)
+def get_jenkins_version(base_url):
+    response = requests.get(base_url)
     if "X-Jenkins" in response.headers:
         return response.headers.get("X-Jenkins")
     return "Unknown"
@@ -174,8 +173,8 @@ def brute_force_credentials(base_url, user_list, pass_list):
 def analyze_jenkins(base_url, auth,headers):
     results = {
         "URL": base_url,
-        "Version": get_jenkins_version(base_url, auth, headers),
-        "Auth Type": detect_auth_type(base_url, auth, headers),
+        "Version": get_jenkins_version(base_url),
+        "Auth Type": detect_auth_type(base_url),
         "Anonymous Access": check_anonymous_access(base_url),
         "CSRF Protection": check_csrf_protection(base_url, auth, headers),
         "Job Visibility": len(check_job_visibility(base_url, auth, headers)),
@@ -338,7 +337,6 @@ python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred --dirb wordl
                     pass_list = [line.strip() for line in file if line.strip()]
             except FileNotFoundError:
                 print(f"Password file not found: {args.password}. Using default list.")
-
 
     results = []
     for url in urls:
