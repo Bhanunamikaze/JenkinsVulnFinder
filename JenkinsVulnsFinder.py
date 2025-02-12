@@ -161,14 +161,13 @@ def dir_search(base_url, paths_file, auth=None, headers=None):
     return accessible_paths
 
 def brute_force_credentials(base_url, user_list, pass_list):
-    valid_credentials = []
     for user in user_list:
         for password in pass_list:
             auth = HTTPBasicAuth(user, password)
             response = requests.get(base_url, auth=auth)
             if response.status_code == 200:
-                valid_credentials.append((user, password))
-    return valid_credentials
+                return [(user, password)]
+    return []
 
 def analyze_jenkins(base_url, auth,headers):
     results = {
@@ -351,7 +350,10 @@ python JenkinsVulnsFinder.py --url http://172.19.107.32:8080 --cred --dirb wordl
 
             if args.brute:
                 valid_credentials = brute_force_credentials(url, user_list, pass_list)
-                result["Brute-force Credentials"] = ", ".join([f"{user}:{password}" for user, password in valid_credentials]) or "None"
+                if valid_credentials:
+                    result["Brute-force Credentials"] = ", ".join([f"{user}:{password}" for user, password in valid_credentials])
+                else:
+                    result["Brute-force Credentials"] = "None"
 
             if args.dirb:
                 accessible_paths  = dir_search(url,args.dirb, auth, headers)
